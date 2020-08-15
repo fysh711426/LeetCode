@@ -4,25 +4,25 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque
 class Solution:
     def isCousins(self, root: TreeNode, x: int, y: int) -> bool:
-        xNode = self.find(root, x)
-        yNode = self.find(root, y)
-
-        if xNode[0] == yNode[0] and xNode[1] != yNode[1]:
-            return True
-        return False
-    
-    # return (deep, parent)
-    def find(self, root, val, deep=0, parent=None):
-        if root is None:
-            return None
-        
-        if root.val == val:
-            return (deep, parent)
-        
-        nodes = [root.left, root.right]
-        for node in nodes:
-            result = self.find(node, val, deep + 1, root.val)
-            if result is not None:
-                return result
+        q = deque([root])
+        px, py = None, None
+        while q:
+            l = len(q)
+            # 搜尋這層中的所有子節點
+            for _ in range(l):
+                n = q.popleft()
+                for child in [n.left, n.right]:
+                    if child == None:
+                        continue
+                    if child.val == x:
+                        px = n.val
+                    if child.val == y:
+                        py = n.val
+                    q.append(child)
+            # 這層中有找到就離開
+            if px or py:
+                break
+        return px and py and px != py
