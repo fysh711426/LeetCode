@@ -1,6 +1,6 @@
 class Solution:
     def removeKdigits(self, num: str, k: int) -> str:
-        # 確保數字小的項目排在前面
+        # 確保數字小的項目在前
         stack = []
         for n in num:
             while stack and n < stack[-1] and k > 0:
@@ -8,7 +8,7 @@ class Solution:
                 k -= 1
             stack.append(n)
         
-        # 刪除剩餘的項目
+        # 刪除剩餘的 k
         if k > 0:
             stack = stack[:-k]
         
